@@ -28,7 +28,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(
 		webEnvironment = SpringBootTest.WebEnvironment.NONE,
 		properties = {"server.port=0"})
-public class WordCountApplicationTests {
+public class KafkaStreamsWordCountApplicationTests {
 
 	@ClassRule
 	public static EmbeddedKafkaRule embeddedKafkaRule = new EmbeddedKafkaRule(1, true, "words", "counts");
@@ -79,71 +79,3 @@ public class WordCountApplicationTests {
 	}
 
 }
-
-
-
-//@RunWith(SpringRunner.class)
-//@SpringBootTest(
-//    webEnvironment = SpringBootTest.WebEnvironment.NONE,
-//    properties = {"server.port=0"}
-//)
-//class WordCountApplicationTests {
-//
-//  @ClassRule
-//  public static EmbeddedKafkaRule embeddedKafkaRule = new EmbeddedKafkaRule(1, true, "words",
-//      "counts");
-//
-//  private static EmbeddedKafkaBroker embeddedKafka = embeddedKafkaRule.getEmbeddedKafka();
-//
-//  private static Consumer<String, String> consumer;
-//
-//  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-//  @Autowired
-//  StreamsBuilderFactoryBean streamsBuilderFactoryBean;
-//
-//  @Before
-//  public void before() {
-//    streamsBuilderFactoryBean.setCloseTimeout(0);
-//  }
-//
-//  @BeforeClass
-//  public static void setUp() {
-//    Map<String, Object> consumerProps = KafkaTestUtils.consumerProps("group", "false",
-//        embeddedKafka);
-//    consumerProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-//    DefaultKafkaConsumerFactory<String, String> cf = new DefaultKafkaConsumerFactory<>(
-//        consumerProps);
-//    consumer = cf.createConsumer();
-//    embeddedKafka.consumeFromAnEmbeddedTopic(consumer, "counts");
-//    System.setProperty("spring.cloud.stream.kafka.streams.binder.brokers",
-//        embeddedKafka.getBrokersAsString());
-//    System.out.println(embeddedKafka.getBrokersAsString());
-//  }
-//
-//  @AfterClass
-//	public static void tearDown() {
-//		consumer.close();
-//		System.clearProperty("spring.cloud.stream.kafka.streams.binder.brokers");
-//	}
-//
-//	@Test
-//	public void testKafkaStreamsWordCountProcessor() {
-//		Map<String, Object> senderProps = KafkaTestUtils.producerProps(embeddedKafka);
-//		DefaultKafkaProducerFactory<Integer, String> pf = new DefaultKafkaProducerFactory<>(senderProps);
-//		try {
-//			KafkaTemplate<Integer, String> template = new KafkaTemplate<>(pf, true);
-//			template.setDefaultTopic("words");
-//			template.sendDefault("foobar");
-//			ConsumerRecords<String, String> cr = KafkaTestUtils.getRecords(consumer);
-//			assertThat(cr.count()).isGreaterThanOrEqualTo(1);
-//		}
-//		finally {
-//			pf.destroy();
-//		}
-//	}
-//
-////  @Test
-////  void contextLoads() {
-////  }
-//
-//}
