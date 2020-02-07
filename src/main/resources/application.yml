@@ -1,0 +1,29 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        process-in-0:
+          destination: words
+        process-out-0:
+          destination: counts
+      kafka:
+        streams:
+          binder:
+            application-id: word-count-sample
+            configuration:
+              commit.interval.ms: 100
+              default:
+                key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: metrics,health
+logging:
+  level:
+    org.springframework.kafka.config: debug
